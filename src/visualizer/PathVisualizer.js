@@ -76,19 +76,30 @@ const PathVisualizer = () => {
         setMouseIsPressed(false);
     };
 
-    const animateDijkstra = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+    const animateDijkstra = (visitedNodesInOrder, nodesInShortestPathOrder, finishNode) => {
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
             if (i === visitedNodesInOrder.length) {
-                console.log("grid", grid)
-                setTimeout(() => {
-                    animateShortestPath(nodesInShortestPathOrder);
-                }, 10 * i);
-                return;
-            }
+                if(finishNode.isVisited){
+                    setTimeout(() => {
+                        animateShortestPath(nodesInShortestPathOrder);
+                    }, 10 * i);
+                    return;
+                } else {
+                    setTimeout(() => {
+                        alert("Impossible to find a path")
+                    }, 10 * i * 1.2)
+                }  
+            } 
             setTimeout(() => {
                 const node = visitedNodesInOrder[i];
                 const element = document.getElementById(`node-${node.row}-${node.col}`);
-                if (element) element.className = 'node node-visited';
+                if (element) {
+                    if (node.row === START_NODE_ROW && node.col === START_NODE_COL) {
+                        element.className = "node node-start"
+                    } else {
+                        element.className = 'node node-visited';
+                    }
+                }
             }, 10 * i);
         }
     };
@@ -108,7 +119,7 @@ const PathVisualizer = () => {
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+        animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, finishNode);
     };
 
     const clearGrid = () => {
@@ -120,9 +131,9 @@ const PathVisualizer = () => {
             for (let col = 0; col < 50; col++) {
                 const element = document.getElementById(`node-${row}-${col}`);
                 if (element) {
-                    if (element && row === START_NODE_ROW && col === START_NODE_COL) {
+                    if (row === START_NODE_ROW && col === START_NODE_COL) {
                         element.className = "node node-start"
-                    } else if (element && row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
+                    } else if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
                         element.className = "node node-finish";
                     } else {
                         element.className = 'node';
