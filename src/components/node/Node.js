@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import ReactDOM from 'react-dom';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import './Node.css';
 
 const Node = (props) => {
@@ -12,18 +14,18 @@ const Node = (props) => {
         onMouseEnter,
         onMouseUp,
         row,
+        mouseDisabled,
         startPoint,
         setStartPoint,
-        setMouseDisabled
     } = props;
+
 
     const extraClassName = isFinish
         ? 'node-finish'
-        : isStart
-            ? 'node-start'
-            : isWall
-                ? 'node-wall'
-                : '';
+
+        : isWall
+            ? 'node-wall'
+            : '';
 
     const handleDragStart = (e) => {
         const startPos = { row, col };
@@ -32,13 +34,8 @@ const Node = (props) => {
 
     const handleDrop = (e) => {
         e.preventDefault();
-        const data = e.dataTransfer.getData('text/plain');
-        const startPos = JSON.parse(data);
-        setStartPoint({row: row, col: col})
-        const oldStartNode = document.getElementById(`node-${startPos.row}-${startPos.col}`);
-        oldStartNode.className = 'node'
-        const newStartNode = document.getElementById(`node-${row}-${col}`);
-        newStartNode.className = 'node node-start'
+        console.log(row, col)
+        setStartPoint({ row: row, col: col })
     };
 
     const handleDragOver = (e) => {
@@ -46,20 +43,29 @@ const Node = (props) => {
         e.dataTransfer.dropEffect = 'move';
     };
 
+    const checkPosition = (row, col) => {
+        if(startPoint.row === row && startPoint.col === col){
+            return true;
+        } else return false;
+    } 
 
     return (
         <div
             id={`node-${row}-${col}`}
             className={`node ${extraClassName}`}
-            onMouseDown={dragging ? null : () => onMouseDown(row, col)}
-            onMouseEnter={() => onMouseEnter(row, col)}
-            onMouseUp={() => onMouseUp()}
-            onDragStart={startPoint.row === row && startPoint.col === col ? handleDragStart : null}
+            onMouseDown={mouseDisabled || dragging ? null : () => onMouseDown(row, col)}
+            onMouseEnter={mouseDisabled ? null : () => onMouseEnter(row, col)}
+            onMouseUp={() => {
+                onMouseUp()
+            }}
+            onDragStart={mouseDisabled ? null : startPoint.row === row && startPoint.col === col ? handleDragStart : null}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
-            draggable={isStart ? true : false}
+            draggable={checkPosition(row, col) ? true : false}
             {...(isStart ? { onMouseOver: () => setDragging(true) } : null)}
-        />
+        >
+            {checkPosition(row, col) && <PlayArrowRoundedIcon />}
+        </div>
     )
 }
 

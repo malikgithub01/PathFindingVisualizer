@@ -14,7 +14,7 @@ const PathVisualizer = () => {
     const [grid, setGrid] = useState([]);
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
     const [mouseDisabled, setMouseDisabled] = useState(false)
-    const [startPoint, setStartPoint] = useState({row: 10, col: 15})
+    const [startPoint, setStartPoint] = useState({ row: 10, col: 15 })
 
     useEffect(() => {
         const initialGrid = getInitialGrid(startPoint);
@@ -24,7 +24,7 @@ const PathVisualizer = () => {
 
 
     const handleMouseDown = (row, col) => {
-        if(startPoint.row === row && startPoint.col === col) return;
+        if (startPoint.row === row && startPoint.col === col) return;
         const newGrid = getNewGridWithWallToggled(grid, row, col);
         setGrid(newGrid);
         setMouseIsPressed(true);
@@ -32,7 +32,7 @@ const PathVisualizer = () => {
 
     const handleMouseEnter = (row, col) => {
         if (!mouseIsPressed) return;
-        if(startPoint.row === row && startPoint.col === col) return;
+        if (startPoint.row === row && startPoint.col === col) return;
         const newGrid = getNewGridWithWallToggled(grid, row, col);
         setGrid(newGrid);
     };
@@ -59,11 +59,7 @@ const PathVisualizer = () => {
                 const node = visitedNodesInOrder[i];
                 const element = document.getElementById(`node-${node.row}-${node.col}`);
                 if (element) {
-                    if (node.row === startPoint.row && node.col === startPoint.col) {
-                        element.className = "node node-start"
-                    } else {
-                        element.className = 'node node-visited node-visited-after';
-                    }
+                    element.className = 'node node-visited node-visited-after';
                 }
             }, 10 * i);
 
@@ -98,9 +94,7 @@ const PathVisualizer = () => {
             for (let col = 0; col < 50; col++) {
                 const element = document.getElementById(`node-${row}-${col}`);
                 if (element) {
-                    if (row === startPoint.row && col === startPoint.col) {
-                        element.className = "node node-start"
-                    } else if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
+                    if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
                         element.className = "node node-finish";
                     } else {
                         element.className = 'node';
@@ -134,10 +128,11 @@ const PathVisualizer = () => {
                                         isWall={isWall}
                                         startPoint={startPoint}
                                         setStartPoint={setStartPoint}
+                                        mouseDisabled={mouseDisabled}
                                         setMouseDisabled={setMouseDisabled}
-                                        onMouseDown={mouseDisabled ? null : (row, col) => handleMouseDown(row, col)}
-                                        onMouseEnter={mouseDisabled ? null : (row, col) => handleMouseEnter(row, col)}
-                                        onMouseUp={mouseDisabled ? null : () => handleMouseUp()}
+                                        onMouseDown={(row, col) => handleMouseDown(row, col)}
+                                        onMouseEnter={(row, col) => handleMouseEnter(row, col)}
+                                        onMouseUp={() => handleMouseUp()}
                                     />
                                 );
                             })}
