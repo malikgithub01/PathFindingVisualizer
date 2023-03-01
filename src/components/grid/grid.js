@@ -1,26 +1,24 @@
-const START_NODE_ROW = 10;
-const START_NODE_COL = 15;
+
 const FINISH_NODE_ROW = 10;
 const FINISH_NODE_COL = 35;
 
-export function getInitialGrid() {
+export function getInitialGrid(start) {
     const grid = [];
     for (let row = 0; row < 20; row++) {
         const currentRow = [];
         for (let col = 0; col < 50; col++) {
-            currentRow.push(createNode(col, row));
+            currentRow.push(createNode(col, row, start));
         }
         grid.push(currentRow);
-        console.log(grid)
     }
     return grid;
 };
 
-function createNode(col, row) {
+function createNode(col, row, start) {
     return {
         col,
         row,
-        isStart: row === START_NODE_ROW && col === START_NODE_COL,
+        isStart: row === start.row && col === start.col,
         isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
         distance: Infinity,
         isVisited: false,
