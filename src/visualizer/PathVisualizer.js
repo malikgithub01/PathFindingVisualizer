@@ -60,10 +60,11 @@ const PathVisualizer = () => {
                     if (node.row === START_NODE_ROW && node.col === START_NODE_COL) {
                         element.className = "node node-start"
                     } else {
-                        element.className = 'node node-visited';
+                        element.className = 'node node-visited node-visited-after';
                     }
                 }
             }, 10 * i);
+            
         }
     };
 
