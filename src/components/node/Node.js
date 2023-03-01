@@ -12,6 +12,8 @@ const Node = (props) => {
         onMouseEnter,
         onMouseUp,
         row,
+        startPoint,
+        setStartPoint,
         setMouseDisabled
     } = props;
 
@@ -28,12 +30,16 @@ const Node = (props) => {
         const startPos = { row, col };
         e.dataTransfer.setData('text/plain', JSON.stringify(startPos));
     }
+
     const handleDrop = (e) => {
         e.preventDefault();
         const data = e.dataTransfer.getData('text/plain');
         const startPos = JSON.parse(data);
-        console.log(`Start position: (${startPos.row}, ${startPos.col})`);
-        console.log(`Dropped position: (${row}, ${col})`);
+        setStartPoint({row: row, col: col})
+        const oldStartNode = document.getElementById(`node-${startPos.row}-${startPos.col}`);
+        oldStartNode.className = 'node'
+        const newStartNode = document.getElementById(`node-${row}-${col}`);
+        newStartNode.className = 'node node-start'
     };
 
     const handleDragOver = (e) => {
@@ -50,10 +56,10 @@ const Node = (props) => {
             onMouseDown={dragging ? null : () => onMouseDown(row, col)}
             onMouseEnter={() => onMouseEnter(row, col)}
             onMouseUp={() => onMouseUp()}
-            onDragStart={handleDragStart}
+            onDragStart={startPoint.row === row && startPoint.col === col ? handleDragStart : null}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
-            draggable={isStart}
+            draggable={isStart ? true : false}
             {...(isStart ? { onMouseOver: () => setDragging(true) } : null)}
         />
     )

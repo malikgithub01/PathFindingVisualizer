@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Node from '../components/node/Node';
 import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra';
-import { getInitialGrid, getNewGridWithWallToggled } from '../components/grid/Grid'
+import { getInitialGrid, getNewGridWithWallToggled } from '../components/grid/grid'
 import './PathVisualizer.css'
 
 
@@ -24,6 +24,7 @@ const PathVisualizer = () => {
 
 
     const handleMouseDown = (row, col) => {
+        if(startPoint.row === row && startPoint.col === col) return;
         const newGrid = getNewGridWithWallToggled(grid, row, col);
         setGrid(newGrid);
         setMouseIsPressed(true);
@@ -31,6 +32,7 @@ const PathVisualizer = () => {
 
     const handleMouseEnter = (row, col) => {
         if (!mouseIsPressed) return;
+        if(startPoint.row === row && startPoint.col === col) return;
         const newGrid = getNewGridWithWallToggled(grid, row, col);
         setGrid(newGrid);
     };
@@ -130,6 +132,8 @@ const PathVisualizer = () => {
                                         isFinish={isFinish}
                                         isStart={isStart}
                                         isWall={isWall}
+                                        startPoint={startPoint}
+                                        setStartPoint={setStartPoint}
                                         setMouseDisabled={setMouseDisabled}
                                         onMouseDown={mouseDisabled ? null : (row, col) => handleMouseDown(row, col)}
                                         onMouseEnter={mouseDisabled ? null : (row, col) => handleMouseEnter(row, col)}

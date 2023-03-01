@@ -27,12 +27,10 @@
     
   
     50% {
-      transform: scale(1.2);
       background-color: rgba(0, 217, 159, 0.75);
     }
   
     100% {
-      transform: scale(1);
       background-color: rgba(0, 190, 218, 0.75);
     }
   }
