@@ -26,7 +26,6 @@ const Node = (props) => {
                 : '';
 
     const handleDragStart = (e) => {
-        setMouseDisabled(true)
         const startPos = { row, col };
         e.dataTransfer.setData('text/plain', JSON.stringify(startPos));
     }
@@ -45,7 +44,6 @@ const Node = (props) => {
     const handleDragOver = (e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
-        setMouseDisabled(false)
     };
 
 
