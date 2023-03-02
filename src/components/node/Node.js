@@ -1,53 +1,65 @@
 import React, { useState } from 'react'
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
 import './Node.css';
 
 const Node = (props) => {
     const [dragging, setDragging] = useState(false)
     const {
         col,
+        row,
         isFinish,
         isStart,
         isWall,
         onMouseDown,
         onMouseEnter,
         onMouseUp,
-        allowDrop,
-        setAllowDrop,
-        row,
+        allowStartDrop,
+        setAllowStartDrop,
+        allowFinishDrop,
+        setAllowFinishDrop,
         mouseDisabled,
         startPoint,
         setStartPoint,
+        finishPoint,
+        setFinishPoint
     } = props;
 
 
-    const extraClassName = isFinish
-        ? 'node-finish'
-        : isWall
-            ? 'node-wall'
-            : '';
+    const extraClassName = isWall ? 'node-wall' : '';
 
     const handleDragStart = (e) => {
-        if(checkPosition(row, col)){
-            console.log("YO")
-            setAllowDrop(true)
+        if (checkStartPosition(row, col)) {
+            setAllowStartDrop(true)
+        }
+        if (checkFinishPosition(row, col)) {
+            setAllowFinishDrop(true)
         }
     }
 
     const handleDrop = (e) => {
-        if(allowDrop){
+        if (allowStartDrop) {
             setStartPoint({ row: row, col: col })
-            setAllowDrop(false)
+            setAllowStartDrop(false)
+        }
+        if (allowFinishDrop) {
+            setFinishPoint({ row: row, col: col })
+            setAllowFinishDrop(false)
         }
     };
 
     const handleDragOver = (e) => {
         e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
     };
 
-    const checkPosition = (row, col) => {
+    const checkStartPosition = (row, col) => {
         if (startPoint.row === row && startPoint.col === col) {
+            return true;
+        } else return false;
+    }
+
+    const checkFinishPosition = (row, col) => {
+        if (finishPoint.row === row && finishPoint.col === col) {
             return true;
         } else return false;
     }
@@ -61,12 +73,17 @@ const Node = (props) => {
             onMouseUp={() => onMouseUp()}
             onDragStart={handleDragStart}
             onDrop={handleDrop}
-            onDragEnd={() => setAllowDrop(false)}
+            onDragEnd={() => {
+                setAllowStartDrop(false);
+                setAllowFinishDrop(false);
+            }}
             onDragOver={handleDragOver}
-            draggable={checkPosition(row, col) ? true : false}
+            draggable={checkStartPosition(row, col) || checkFinishPosition(row, col) ? true : false}
             {...(isStart ? { onMouseOver: () => setDragging(true) } : null)}
+            {...(isFinish ? { onMouseOver: () => setDragging(true) } : null)}
         >
-            {checkPosition(row, col) && <PlayArrowRoundedIcon />}
+            {checkStartPosition(row, col) && <PlayArrowRoundedIcon />}
+            {checkFinishPosition(row, col) && <FlagRoundedIcon />}
         </div>
     )
 }

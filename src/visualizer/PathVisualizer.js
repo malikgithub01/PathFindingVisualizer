@@ -6,8 +6,6 @@ import './PathVisualizer.css'
 
 
 
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35;
 
 const PathVisualizer = () => {
 
@@ -15,7 +13,9 @@ const PathVisualizer = () => {
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
     const [mouseDisabled, setMouseDisabled] = useState(false)
     const [startPoint, setStartPoint] = useState({ row: 10, col: 15 })
-    const [allowDrop, setAllowDrop] = useState(false)
+    const [finishPoint, setFinishPoint] = useState({row: 10, col:35 })
+    const [allowStartDrop, setAllowStartDrop] = useState(false)
+    const [allowFinishDrop, setAllowFinishDrop] = useState(false)
 
     useEffect(() => {
         const disableDraggable = () => {
@@ -25,7 +25,7 @@ const PathVisualizer = () => {
             });
           };
           disableDraggable();
-        const initialGrid = getInitialGrid(startPoint);
+        const initialGrid = getInitialGrid(startPoint, finishPoint);
         setGrid(initialGrid);
     }, []);
 
@@ -33,6 +33,7 @@ const PathVisualizer = () => {
 
     const handleMouseDown = (row, col) => {
         if (startPoint.row === row && startPoint.col === col) return;
+        if(finishPoint.row === row && finishPoint.col === col) return;
         const newGrid = getNewGridWithWallToggled(grid, row, col);
         setGrid(newGrid);
         setMouseIsPressed(true);
@@ -41,6 +42,7 @@ const PathVisualizer = () => {
     const handleMouseEnter = (row, col) => {
         if (!mouseIsPressed) return;
         if (startPoint.row === row && startPoint.col === col) return;
+        if(finishPoint.row === row && finishPoint.col === col) return;
         const newGrid = getNewGridWithWallToggled(grid, row, col);
         setGrid(newGrid);
     };
@@ -87,7 +89,7 @@ const PathVisualizer = () => {
     const visualizeDijkstra = () => {
         setMouseDisabled(true)
         const startNode = grid[startPoint.row][startPoint.col];
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const finishNode = grid[finishPoint.row][finishPoint.col];
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, finishNode);
@@ -95,19 +97,13 @@ const PathVisualizer = () => {
 
     const clearGrid = () => {
         setMouseDisabled(false)
-        const initialGrid = getInitialGrid(startPoint);
+        const initialGrid = getInitialGrid(startPoint, finishPoint);
         setGrid(initialGrid);
 
         for (let row = 0; row < 20; row++) {
             for (let col = 0; col < 50; col++) {
                 const element = document.getElementById(`node-${row}-${col}`);
-                if (element) {
-                    if (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) {
-                        element.className = "node node-finish";
-                    } else {
-                        element.className = 'node';
-                    }
-                }
+                if (element) element.className = 'node';
             }
         }
     }
@@ -136,9 +132,13 @@ const PathVisualizer = () => {
                                         isWall={isWall}
                                         startPoint={startPoint}
                                         setStartPoint={setStartPoint}
+                                        finishPoint={finishPoint}
+                                        setFinishPoint={setFinishPoint}
                                         mouseDisabled={mouseDisabled}
-                                        allowDrop={allowDrop}
-                                        setAllowDrop={setAllowDrop}
+                                        allowStartDrop={allowStartDrop}
+                                        setAllowStartDrop={setAllowStartDrop}
+                                        allowFinishDrop={allowFinishDrop}
+                                        setAllowFinishDrop={setAllowFinishDrop}
                                         setMouseDisabled={setMouseDisabled}
                                         onMouseDown={(row, col) => handleMouseDown(row, col)}
                                         onMouseEnter={(row, col) => handleMouseEnter(row, col)}
