@@ -99,7 +99,6 @@ const PathVisualizer = () => {
         setMouseDisabled(false)
         const initialGrid = getInitialGrid(startPoint, finishPoint);
         setGrid(initialGrid);
-
         for (let row = 0; row < 20; row++) {
             for (let col = 0; col < 50; col++) {
                 const element = document.getElementById(`node-${row}-${col}`);

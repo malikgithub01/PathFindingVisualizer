@@ -71,14 +71,14 @@ const Node = (props) => {
             onMouseDown={mouseDisabled || dragging ? null : () => onMouseDown(row, col)}
             onMouseEnter={mouseDisabled ? null : () => onMouseEnter(row, col)}
             onMouseUp={() => onMouseUp()}
-            onDragStart={handleDragStart}
-            onDrop={handleDrop}
-            onDragEnd={() => {
+            onDragStart={mouseDisabled ? null : handleDragStart}
+            onDrop={mouseDisabled ? null : handleDrop}
+            onDragEnd={mouseDisabled ? null : () => {
                 setAllowStartDrop(false);
                 setAllowFinishDrop(false);
             }}
             onDragOver={handleDragOver}
-            draggable={checkStartPosition(row, col) || checkFinishPosition(row, col) ? true : false}
+            draggable={!mouseDisabled && (checkStartPosition(row, col) || checkFinishPosition(row, col)) ? true : false}
             {...(isStart ? { onMouseOver: () => setDragging(true) } : null)}
             {...(isFinish ? { onMouseOver: () => setDragging(true) } : null)}
         >
