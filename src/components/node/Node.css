@@ -60,6 +60,32 @@
   
   .node-wall {
     background-color: rgb(12, 53, 71);
+    animation-name: walls;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+  }
+
+  @keyframes walls {
+    0% {
+      transform: scale(0.3);
+      border-radius: 100%;
+    }
+  
+    50% {
+      transform: scale(0.8);
+    }
+    75% {
+      transform: scale(1.2);
+    }
+  
+    100% {
+      transform: scale(1.0);
+    }
   }
   
   .node-shortest-path {
@@ -88,12 +114,4 @@
       transform: scale(1.0);
       background-color: rgb(248, 140, 24);
     }
-  }
-
-  .drag-image {
-    position: absolute;
-    top: -1000px;
-    left: -1000px;
-    z-index: 9999;
-    opacity: 0.5;
   }
