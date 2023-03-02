@@ -59,11 +59,10 @@
   }
   
   .node-wall {
-    background-color: rgb(12, 53, 71);
     animation-name: walls;
-    animation-duration: 0.2s;
+    animation-duration: 0.1s;
     animation-timing-function: ease-out;
-    animation-delay: 0;
+    animation-delay: 0.1s;
     animation-direction: alternate;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -74,17 +73,21 @@
     0% {
       transform: scale(0.3);
       border-radius: 100%;
+      background-color: rgb(12, 53, 71);
     }
   
     50% {
       transform: scale(0.8);
+      background-color: rgb(12, 53, 71);
     }
     75% {
       transform: scale(1.2);
+      background-color: rgb(12, 53, 71);
     }
   
     100% {
       transform: scale(1.0);
+      background-color: rgb(12, 53, 71);
     }
   }
   

@@ -69,7 +69,7 @@ const Node = (props) => {
             id={`node-${row}-${col}`}
             className={`node ${extraClassName}`}
             onMouseDown={mouseDisabled || dragging ? null : () => onMouseDown(row, col)}
-            onMouseEnter={mouseDisabled ? null : () => onMouseEnter(row, col)}
+            onMouseEnter={mouseDisabled  || dragging ? null : () => onMouseEnter(row, col)}
             onMouseUp={() => onMouseUp()}
             onDragStart={mouseDisabled ? null : handleDragStart}
             onDrop={mouseDisabled ? null : handleDrop}
