@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import './Node.css';
 
@@ -13,6 +12,8 @@ const Node = (props) => {
         onMouseDown,
         onMouseEnter,
         onMouseUp,
+        allowDrop,
+        setAllowDrop,
         row,
         mouseDisabled,
         startPoint,
@@ -22,20 +23,22 @@ const Node = (props) => {
 
     const extraClassName = isFinish
         ? 'node-finish'
-
         : isWall
             ? 'node-wall'
             : '';
 
     const handleDragStart = (e) => {
-        const startPos = { row, col };
-        e.dataTransfer.setData('text/plain', JSON.stringify(startPos));
+        if(checkPosition(row, col)){
+            console.log("YO")
+            setAllowDrop(true)
+        }
     }
 
     const handleDrop = (e) => {
-        e.preventDefault();
-        console.log(row, col)
-        setStartPoint({ row: row, col: col })
+        if(allowDrop){
+            setStartPoint({ row: row, col: col })
+            setAllowDrop(false)
+        }
     };
 
     const handleDragOver = (e) => {
@@ -44,10 +47,10 @@ const Node = (props) => {
     };
 
     const checkPosition = (row, col) => {
-        if(startPoint.row === row && startPoint.col === col){
+        if (startPoint.row === row && startPoint.col === col) {
             return true;
         } else return false;
-    } 
+    }
 
     return (
         <div
@@ -55,11 +58,10 @@ const Node = (props) => {
             className={`node ${extraClassName}`}
             onMouseDown={mouseDisabled || dragging ? null : () => onMouseDown(row, col)}
             onMouseEnter={mouseDisabled ? null : () => onMouseEnter(row, col)}
-            onMouseUp={() => {
-                onMouseUp()
-            }}
-            onDragStart={mouseDisabled ? null : startPoint.row === row && startPoint.col === col ? handleDragStart : null}
+            onMouseUp={() => onMouseUp()}
+            onDragStart={handleDragStart}
             onDrop={handleDrop}
+            onDragEnd={() => setAllowDrop(false)}
             onDragOver={handleDragOver}
             draggable={checkPosition(row, col) ? true : false}
             {...(isStart ? { onMouseOver: () => setDragging(true) } : null)}

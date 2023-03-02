@@ -3,8 +3,8 @@ import PathVisualizer from './visualizer/PathVisualizer';
 
 function App() {
   return (
-    <div className="App">
-      <PathVisualizer/>
+    <div className="App" draggable={false}>
+      <PathVisualizer draggable={false}/>
     </div>
   );
 }
