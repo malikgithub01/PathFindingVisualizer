@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
 import './Node.css';
+import { getNewGridWithWallToggled } from '../grid/grid';
 
 const Node = (props) => {
     const [dragging, setDragging] = useState(false)
@@ -22,7 +23,9 @@ const Node = (props) => {
         startPoint,
         setStartPoint,
         finishPoint,
-        setFinishPoint
+        setFinishPoint,
+        grid,
+        setGrid
     } = props;
 
 
@@ -41,10 +44,18 @@ const Node = (props) => {
         if (allowStartDrop) {
             setStartPoint({ row: row, col: col })
             setAllowStartDrop(false)
+            if(isWall){
+                const newGrid = getNewGridWithWallToggled(grid, row, col);
+                setGrid(newGrid);            
+            }
         }
         if (allowFinishDrop) {
             setFinishPoint({ row: row, col: col })
             setAllowFinishDrop(false)
+            if(isWall){
+                const newGrid = getNewGridWithWallToggled(grid, row, col);
+                setGrid(newGrid);            
+            }
         }
     };
 

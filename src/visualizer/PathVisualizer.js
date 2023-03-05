@@ -18,15 +18,9 @@ const PathVisualizer = () => {
     const [allowFinishDrop, setAllowFinishDrop] = useState(false)
 
     useEffect(() => {
-        const disableDraggable = () => {
-            const elements = document.querySelectorAll('*');
-            elements.forEach((element) => {
-              element.draggable = false;
-            });
-          };
-          disableDraggable();
         const initialGrid = getInitialGrid(startPoint, finishPoint);
         setGrid(initialGrid);
+        console.log(initialGrid)
     }, []);
 
 
@@ -126,6 +120,8 @@ const PathVisualizer = () => {
                                         key={nodeIdx}
                                         col={col}
                                         row={row}
+                                        grid={grid}
+                                        setGrid={setGrid}
                                         isFinish={isFinish}
                                         isStart={isStart}
                                         isWall={isWall}
@@ -133,11 +129,11 @@ const PathVisualizer = () => {
                                         setStartPoint={setStartPoint}
                                         finishPoint={finishPoint}
                                         setFinishPoint={setFinishPoint}
-                                        mouseDisabled={mouseDisabled}
                                         allowStartDrop={allowStartDrop}
                                         setAllowStartDrop={setAllowStartDrop}
                                         allowFinishDrop={allowFinishDrop}
                                         setAllowFinishDrop={setAllowFinishDrop}
+                                        mouseDisabled={mouseDisabled}
                                         setMouseDisabled={setMouseDisabled}
                                         onMouseDown={(row, col) => handleMouseDown(row, col)}
                                         onMouseEnter={(row, col) => handleMouseEnter(row, col)}
