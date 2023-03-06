@@ -20,7 +20,6 @@ const PathVisualizer = () => {
     useEffect(() => {
         const initialGrid = getInitialGrid(startPoint, finishPoint);
         setGrid(initialGrid);
-        console.log(initialGrid)
     }, []);
 
 
@@ -74,6 +73,7 @@ const PathVisualizer = () => {
         for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
             setTimeout(() => {
                 const node = nodesInShortestPathOrder[i];
+                console.log(node)
                 const element = document.getElementById(`node-${node.row}-${node.col}`);
                 if (element) element.className = 'node node-shortest-path';
             }, 50 * i);
