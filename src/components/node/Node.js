@@ -29,29 +29,27 @@ const Node = (props) => {
     const extraClassName = isWall ? 'node-wall' : '';
 
     const handleDragStart = (e) => {
-        if (checkStartPosition(row, col)) {
-            setAllowStartDrop(true)
-        }
-        if (checkFinishPosition(row, col)) {
-            setAllowFinishDrop(true)
-        }
+        if (checkStartPosition(row, col)) setAllowStartDrop(true)
+        if (checkFinishPosition(row, col)) setAllowFinishDrop(true)
     }
 
     const handleDrop = (e) => {
         if (allowStartDrop) {
+            if (checkFinishPosition(row, col)) return;
             setStartPoint({ row: row, col: col })
             setAllowStartDrop(false)
-            if(isWall){
+            if (isWall) {
                 const newGrid = getNewGridWithWallToggled(grid, row, col);
-                setGrid(newGrid);            
+                setGrid(newGrid);
             }
         }
         if (allowFinishDrop) {
+            if (checkStartPosition(row, col)) return;
             setFinishPoint({ row: row, col: col })
             setAllowFinishDrop(false)
-            if(isWall){
+            if (isWall) {
                 const newGrid = getNewGridWithWallToggled(grid, row, col);
-                setGrid(newGrid);            
+                setGrid(newGrid);
             }
         }
     };
@@ -61,15 +59,13 @@ const Node = (props) => {
     };
 
     const checkStartPosition = (row, col) => {
-        if (startPoint.row === row && startPoint.col === col) {
-            return true;
-        } else return false;
+        if (startPoint.row === row && startPoint.col === col) return true;
+        else return false;
     }
 
     const checkFinishPosition = (row, col) => {
-        if (finishPoint.row === row && finishPoint.col === col) {
-            return true;
-        } else return false;
+        if (finishPoint.row === row && finishPoint.col === col) return true;
+        else return false;
     }
 
     return (
@@ -77,7 +73,7 @@ const Node = (props) => {
             id={`node-${row}-${col}`}
             className={`node ${extraClassName}`}
             onMouseDown={mouseDisabled ? null : () => onMouseDown(row, col)}
-            onMouseEnter={mouseDisabled   ? null : () => onMouseEnter(row, col)}
+            onMouseEnter={mouseDisabled ? null : () => onMouseEnter(row, col)}
             onMouseUp={() => onMouseUp()}
             onDragStart={mouseDisabled ? null : handleDragStart}
             onDrop={mouseDisabled ? null : handleDrop}
