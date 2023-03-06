@@ -50,6 +50,7 @@ const PathVisualizer = () => {
                 if (finishNode.isVisited) {
                     setTimeout(() => {
                         animateShortestPath(nodesInShortestPathOrder);
+                        console.log(grid)
                     }, 10 * i);
                     return;
                 } else {
@@ -73,7 +74,6 @@ const PathVisualizer = () => {
         for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
             setTimeout(() => {
                 const node = nodesInShortestPathOrder[i];
-                console.log(node)
                 const element = document.getElementById(`node-${node.row}-${node.col}`);
                 if (element) element.className = 'node node-shortest-path';
             }, 50 * i);
@@ -114,7 +114,7 @@ const PathVisualizer = () => {
                     return (
                         <div key={rowIdx} draggable={false}>
                             {row.map((node, nodeIdx) => {
-                                const { row, col, isFinish, isStart, isWall } = node;
+                                const { row, col, isWall } = node;
                                 return (
                                     <Node
                                         key={nodeIdx}
@@ -122,8 +122,6 @@ const PathVisualizer = () => {
                                         row={row}
                                         grid={grid}
                                         setGrid={setGrid}
-                                        isFinish={isFinish}
-                                        isStart={isStart}
                                         isWall={isWall}
                                         startPoint={startPoint}
                                         setStartPoint={setStartPoint}

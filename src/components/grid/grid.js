@@ -14,8 +14,6 @@ function createNode(col, row, start, finish) {
     return {
         col,
         row,
-        isStart: row === start.row && col === start.col,
-        isFinish: row === finish.row && col === finish.col,
         distance: Infinity,
         isVisited: false,
         isWall: false,

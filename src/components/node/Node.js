@@ -5,12 +5,9 @@ import './Node.css';
 import { getNewGridWithWallToggled } from '../grid/grid';
 
 const Node = (props) => {
-    const [dragging, setDragging] = useState(false)
     const {
         col,
         row,
-        isFinish,
-        isStart,
         isWall,
         onMouseDown,
         onMouseEnter,
@@ -79,8 +76,8 @@ const Node = (props) => {
         <div
             id={`node-${row}-${col}`}
             className={`node ${extraClassName}`}
-            onMouseDown={mouseDisabled || dragging ? null : () => onMouseDown(row, col)}
-            onMouseEnter={mouseDisabled  || dragging ? null : () => onMouseEnter(row, col)}
+            onMouseDown={mouseDisabled ? null : () => onMouseDown(row, col)}
+            onMouseEnter={mouseDisabled   ? null : () => onMouseEnter(row, col)}
             onMouseUp={() => onMouseUp()}
             onDragStart={mouseDisabled ? null : handleDragStart}
             onDrop={mouseDisabled ? null : handleDrop}
@@ -90,8 +87,6 @@ const Node = (props) => {
             }}
             onDragOver={handleDragOver}
             draggable={!mouseDisabled && (checkStartPosition(row, col) || checkFinishPosition(row, col)) ? true : false}
-            {...(isStart ? { onMouseOver: () => setDragging(true) } : null)}
-            {...(isFinish ? { onMouseOver: () => setDragging(true) } : null)}
         >
             {checkStartPosition(row, col) && <PlayArrowRoundedIcon />}
             {checkFinishPosition(row, col) && <FlagRoundedIcon />}
