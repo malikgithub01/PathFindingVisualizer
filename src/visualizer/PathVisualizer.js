@@ -13,7 +13,7 @@ const PathVisualizer = () => {
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
     const [mouseDisabled, setMouseDisabled] = useState(false)
     const [startPoint, setStartPoint] = useState({ row: 10, col: 15 })
-    const [finishPoint, setFinishPoint] = useState({row: 10, col:35 })
+    const [finishPoint, setFinishPoint] = useState({ row: 10, col: 35 })
     const [allowStartDrop, setAllowStartDrop] = useState(false)
     const [allowFinishDrop, setAllowFinishDrop] = useState(false)
 
@@ -26,7 +26,7 @@ const PathVisualizer = () => {
 
     const handleMouseDown = (row, col) => {
         if (startPoint.row === row && startPoint.col === col) return;
-        if(finishPoint.row === row && finishPoint.col === col) return;
+        if (finishPoint.row === row && finishPoint.col === col) return;
         const newGrid = getNewGridWithWallToggled(grid, row, col);
         setGrid(newGrid);
         setMouseIsPressed(true);
@@ -35,7 +35,7 @@ const PathVisualizer = () => {
     const handleMouseEnter = (row, col) => {
         if (!mouseIsPressed) return;
         if (startPoint.row === row && startPoint.col === col) return;
-        if(finishPoint.row === row && finishPoint.col === col) return;
+        if (finishPoint.row === row && finishPoint.col === col) return;
         const newGrid = getNewGridWithWallToggled(grid, row, col);
         setGrid(newGrid);
     };
@@ -103,13 +103,15 @@ const PathVisualizer = () => {
 
     return (
         <>
-            <button onClick={() => visualizeDijkstra()}>
-                Visualize Dijkstra's Algorithm
-            </button>
-            <button onClick={() => clearGrid()}>
-                Clear Grid
-            </button>
-            <div style={{ margin: '100px 0 0' }} draggable={false}>
+            <div className='btn-container'>
+                <button className='btn-main' role="button" onClick={() => visualizeDijkstra()}>
+                    Visualize
+                </button>
+                <button className='btn-main' role="button" onClick={() => clearGrid()}>
+                    Clear Grid
+                </button>
+            </div>
+            <div style={{ margin: '20px 0 0' }} draggable={false}>
                 {grid.map((row, rowIdx) => {
                     return (
                         <div key={rowIdx} draggable={false}>
