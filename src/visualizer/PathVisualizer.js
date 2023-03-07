@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Node from '../components/node/Node';
-import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra';
+import { dijkstra } from '../algorithms/dijkstra';
 import { aStar } from '../algorithms/a-star';
+import { getNodesInShortestPathOrder } from '../algorithms/getShortestPath';
 import { getInitialGrid, getNewGridWithWallToggled } from '../components/grid/grid'
 import './PathVisualizer.css'
 
@@ -17,6 +18,7 @@ const PathVisualizer = () => {
     const [finishPoint, setFinishPoint] = useState({ row: 10, col: 35 })
     const [allowStartDrop, setAllowStartDrop] = useState(false)
     const [allowFinishDrop, setAllowFinishDrop] = useState(false)
+    const [animationFinished, setAnimationFinished] = useState(true)
 
     useEffect(() => {
         const initialGrid = getInitialGrid(startPoint, finishPoint);
@@ -46,6 +48,7 @@ const PathVisualizer = () => {
     };
 
     const animateVisitedNodes = (visitedNodesInOrder, nodesInShortestPathOrder, finishNode) => {
+        setAnimationFinished(false)
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
             if (i === visitedNodesInOrder.length) {
                 if (finishNode.isVisited) {
@@ -79,6 +82,7 @@ const PathVisualizer = () => {
                 if (element) element.className = 'node node-shortest-path';
             }, 50 * i);
         }
+        setAnimationFinished(true)
     };
 
     const visualizeDijkstra = () => {
@@ -116,13 +120,13 @@ const PathVisualizer = () => {
     return (
         <>
             <div className='btn-container'>
-                <button className='btn-main' role="button" onClick={() => visualizeDijkstra()}>
+                <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeDijkstra()}>
                     Visualize Dijkstra's Algorithm
                 </button>
-                <button className='btn-main' role="button" onClick={() => visualizeAStar()}>
+                <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeAStar()}>
                     Visualize A*'s Algorithm
                 </button>
-                <button className='btn-main' role="button" onClick={() => clearGrid()}>
+                <button className='btn-main' role="button" onClick={() => animationFinished && clearGrid()}>
                     Clear Grid
                 </button>
             </div>
