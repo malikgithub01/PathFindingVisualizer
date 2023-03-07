@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Node from '../components/node/Node';
 import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra';
+import { aStar } from '../algorithms/a-star';
 import { getInitialGrid, getNewGridWithWallToggled } from '../components/grid/grid'
 import './PathVisualizer.css'
 
@@ -44,7 +45,7 @@ const PathVisualizer = () => {
         setMouseIsPressed(false);
     };
 
-    const animateDijkstra = (visitedNodesInOrder, nodesInShortestPathOrder, finishNode) => {
+    const animateVisitedNodes = (visitedNodesInOrder, nodesInShortestPathOrder, finishNode) => {
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
             if (i === visitedNodesInOrder.length) {
                 if (finishNode.isVisited) {
@@ -86,8 +87,19 @@ const PathVisualizer = () => {
         const finishNode = grid[finishPoint.row][finishPoint.col];
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder, finishNode);
+        animateVisitedNodes(visitedNodesInOrder, nodesInShortestPathOrder, finishNode);
     };
+
+    const visualizeAStar = () => {
+        setMouseDisabled(true)
+        const startNode = grid[startPoint.row][startPoint.col];
+        const finishNode = grid[finishPoint.row][finishPoint.col];
+        const visitedNodesInOrder = aStar(grid, startNode, finishNode);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+        animateVisitedNodes(visitedNodesInOrder,nodesInShortestPathOrder, finishNode)
+    }
+
+    
 
     const clearGrid = () => {
         setMouseDisabled(false)
@@ -105,7 +117,10 @@ const PathVisualizer = () => {
         <>
             <div className='btn-container'>
                 <button className='btn-main' role="button" onClick={() => visualizeDijkstra()}>
-                    Visualize
+                    Visualize Dijkstra's Algorithm
+                </button>
+                <button className='btn-main' role="button" onClick={() => visualizeAStar()}>
+                    Visualize A*'s Algorithm
                 </button>
                 <button className='btn-main' role="button" onClick={() => clearGrid()}>
                     Clear Grid

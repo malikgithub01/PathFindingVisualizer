@@ -18,6 +18,7 @@ function createNode(col, row, start, finish) {
         isVisited: false,
         isWall: false,
         previousNode: null,
+        fScore: Infinity
     };
 };
 
