@@ -61,6 +61,7 @@ const PathVisualizer = () => {
                     setTimeout(() => {
                         alert("Impossible to find a path")
                     }, 10 * i * 1.3)
+                    setAnimationFinished(true)
                 }
             }
             setTimeout(() => {
