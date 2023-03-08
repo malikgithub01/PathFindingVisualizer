@@ -1,4 +1,4 @@
-export function aStar(grid, startNode, finishNode) {
+export function greedyBestFirstSearch(grid, startNode, finishNode) {
     const visitedNodesInOrder = [];
     startNode.distance = 0;
     startNode.fScore = heuristic(startNode, finishNode);
@@ -22,7 +22,7 @@ function sortNodesByFScore(unvisitedNodes) {
 function updateUnvisitedNeighbors(node, grid, finishNode) {
     const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
     for (const neighbor of unvisitedNeighbors) {
-        const tentativeScore = node.distance + 1 + heuristic(neighbor, finishNode);
+        const tentativeScore = heuristic(neighbor, finishNode);
         if (tentativeScore < neighbor.fScore) {
             neighbor.distance = node.distance + 1;
             neighbor.fScore = tentativeScore;

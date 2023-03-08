@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Node from '../components/node/Node';
 import { dijkstra } from '../algorithms/dijkstra';
 import { aStar } from '../algorithms/a-star';
+import { greedyBestFirstSearch } from '../algorithms/greedyBFS';
 import { getNodesInShortestPathOrder } from '../algorithms/getShortestPath';
 import { getInitialGrid, getNewGridWithWallToggled } from '../components/grid/grid'
 import './PathVisualizer.css'
@@ -104,7 +105,14 @@ const PathVisualizer = () => {
         animateVisitedNodes(visitedNodesInOrder,nodesInShortestPathOrder, finishNode)
     }
 
-    
+    const visualizeGreedyBSF = () => {
+        setMouseDisabled(true)
+        const startNode = grid[startPoint.row][startPoint.col];
+        const finishNode = grid[finishPoint.row][finishPoint.col];
+        const visitedNodesInOrder = greedyBestFirstSearch(grid, startNode, finishNode);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+        animateVisitedNodes(visitedNodesInOrder, nodesInShortestPathOrder, finishNode)
+    }
 
     const clearGrid = () => {
         setMouseDisabled(false)
@@ -126,6 +134,9 @@ const PathVisualizer = () => {
                 </button>
                 <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeAStar()}>
                     Visualize A*'s Algorithm
+                </button>
+                <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeGreedyBSF()}>
+                    Visualize Greedy BSF
                 </button>
                 <button className='btn-main' role="button" onClick={() => animationFinished && clearGrid()}>
                     Clear Grid
