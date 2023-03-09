@@ -6,6 +6,7 @@ import { greedyBestFirstSearch } from '../algorithms/greedyBFS';
 import { getNodesInShortestPathOrder } from '../algorithms/getShortestPath';
 import { getInitialGrid, getNewGridWithWallToggled } from '../components/grid/grid'
 import './PathVisualizer.css'
+import { recursiveDivisionMaze } from '../algorithms/maze/recursiveDivision';
 
 
 
@@ -22,7 +23,7 @@ const PathVisualizer = () => {
     const [animationFinished, setAnimationFinished] = useState(true)
 
     useEffect(() => {
-        const initialGrid = getInitialGrid(startPoint, finishPoint);
+        const initialGrid = getInitialGrid();
         setGrid(initialGrid);
     }, []);
 
@@ -55,7 +56,6 @@ const PathVisualizer = () => {
                 if (finishNode.isVisited) {
                     setTimeout(() => {
                         animateShortestPath(nodesInShortestPathOrder);
-                        console.log(grid)
                     }, 10 * i);
                     return;
                 } else {
@@ -72,7 +72,6 @@ const PathVisualizer = () => {
                     element.className = 'node node-visited node-visited-after';
                 }
             }, 10 * i);
-
         }
     };
 
@@ -86,6 +85,18 @@ const PathVisualizer = () => {
         }
         setAnimationFinished(true)
     };
+
+    const animateAddedWalls = (walls) => {
+        for (let i = 0; i < walls.length; i++) {
+            setTimeout(() => {
+                const wall = walls[i];
+                const node = grid[wall[0]][wall[1]]
+                node.isWall = true
+                const element = document.getElementById(`node-${wall[0]}-${[wall[1]]}`)
+                if (element) element.className = 'node node-wall'
+            }, 20 * i)
+        }
+    }
 
     const visualizeDijkstra = () => {
         setMouseDisabled(true)
@@ -102,7 +113,7 @@ const PathVisualizer = () => {
         const finishNode = grid[finishPoint.row][finishPoint.col];
         const visitedNodesInOrder = aStar(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        animateVisitedNodes(visitedNodesInOrder,nodesInShortestPathOrder, finishNode)
+        animateVisitedNodes(visitedNodesInOrder, nodesInShortestPathOrder, finishNode)
     }
 
     const visualizeGreedyBSF = () => {
@@ -114,9 +125,14 @@ const PathVisualizer = () => {
         animateVisitedNodes(visitedNodesInOrder, nodesInShortestPathOrder, finishNode)
     }
 
+    const visualizeRecursiveDivision = (grid, startPoint, finishPoint) => {
+        let walls = recursiveDivisionMaze(grid, startPoint, finishPoint)
+        animateAddedWalls(walls)
+    }
+
     const clearGrid = () => {
         setMouseDisabled(false)
-        const initialGrid = getInitialGrid(startPoint, finishPoint);
+        const initialGrid = getInitialGrid();
         setGrid(initialGrid);
         for (let row = 0; row < 20; row++) {
             for (let col = 0; col < 50; col++) {
@@ -137,6 +153,9 @@ const PathVisualizer = () => {
                 </button>
                 <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeGreedyBSF()}>
                     Visualize Greedy BSF
+                </button>
+                <button className='btn-main' role="button" onClick={() => animationFinished && visualizeRecursiveDivision(grid, startPoint, finishPoint)}>
+                    Create Maze
                 </button>
                 <button className='btn-main' role="button" onClick={() => animationFinished && clearGrid()}>
                     Clear Grid
