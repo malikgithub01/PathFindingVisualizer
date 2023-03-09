@@ -25,6 +25,13 @@ function getRecursiveWalls(vertical, horizontal, grid, startNode, finishNode) {
     if (vertical.length > horizontal.length) {
         dir = 0;
         num = generateOddRandomNumber(vertical);
+    }
+    if (vertical.length <= horizontal.length) {
+        dir = 1;
+        num = generateOddRandomNumber(horizontal);
+    }
+
+    if (dir === 0) {
         addWall(dir, num, vertical, horizontal, startNode, finishNode);
         getRecursiveWalls(
             vertical.slice(0, vertical.indexOf(num)),
@@ -40,10 +47,7 @@ function getRecursiveWalls(vertical, horizontal, grid, startNode, finishNode) {
             startNode,
             finishNode
         );
-    }
-    if (vertical.length <= horizontal.length) {
-        dir = 1;
-        num = generateOddRandomNumber(horizontal);
+    } else {
         addWall(dir, num, vertical, horizontal, startNode, finishNode);
         getRecursiveWalls(
             vertical,
@@ -83,7 +87,10 @@ function addWall(dir, num, vertical, horizontal, startNode, finishNode) {
     if (dir === 0) {
         if (horizontal.length === 2) return;
         for (let temp of horizontal) {
-            if ((temp === startNode.row && num === startNode.col) || (temp === finishNode.row && num === finishNode.col)) {
+            if (
+                (temp === startNode.row && num === startNode.col) ||
+                (temp === finishNode.row && num === finishNode.col)
+            ) {
                 isStartFinish = true;
                 continue;
             }
@@ -92,7 +99,9 @@ function addWall(dir, num, vertical, horizontal, startNode, finishNode) {
     } else {
         if (vertical.length === 2) return;
         for (let temp of vertical) {
-            if ((num === startNode.row && temp === startNode.col) || (num === finishNode.row && temp === finishNode.col)
+            if (
+                (num === startNode.row && temp === startNode.col) ||
+                (num === finishNode.row && temp === finishNode.col)
             ) {
                 isStartFinish = true;
                 continue;
