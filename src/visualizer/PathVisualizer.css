@@ -52,4 +52,6 @@
   color: #DDDDDD;
   cursor: not-allowed;
   opacity: 1;
+  pointer-events: none; /* add this line */
 }
+

@@ -176,22 +176,22 @@ const PathVisualizer = () => {
     return (
         <>
             <div className='btn-container'>
-                <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeDijkstra()}>
+                <button className='btn-main' role="button" disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeDijkstra()}>
                     Visualize Dijkstra's Algorithm
                 </button>
-                <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeAStar()}>
+                <button className='btn-main' role="button" disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeAStar()}>
                     Visualize A*'s Algorithm
                 </button>
-                <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeGreedyBSF()}>
+                <button className='btn-main' role="button" disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeGreedyBSF()}>
                     Visualize Greedy BSF
                 </button>
-                <button className='btn-main' role="button" onClick={() => animationFinished && !mouseDisabled && visualizeRecursiveDivision()}>
+                <button className='btn-main' role="button" disabled={mouseDisabled || !animationFinished} onClick={() => animationFinished && !mouseDisabled && visualizeRecursiveDivision()}>
                     Create Maze
                 </button>
-                <button className='btn-main' role="button" onClick={() => animationFinished && clearGrid()}>
+                <button className='btn-main' role="button" disabled={!animationFinished} onClick={() => animationFinished && clearGrid()}>
                     Clear Grid
                 </button>
-                <button className='btn-main' role="button" onClick={() => animationFinished && clearVisited()}>
+                <button className='btn-main' role="button" disabled={!animationFinished} onClick={() => animationFinished && clearVisited()}>
                     Clear Visited Nodes
                 </button>
             </div>
