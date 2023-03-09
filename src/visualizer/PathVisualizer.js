@@ -23,10 +23,13 @@ const PathVisualizer = () => {
     const [animationFinished, setAnimationFinished] = useState(true)
 
     useEffect(() => {
-        const initialGrid = getInitialGrid();
-        setGrid(initialGrid);
+        setInitGrid()
     }, []);
 
+    const setInitGrid = () => {
+        const initialGrid = getInitialGrid();
+        setGrid(initialGrid);
+    }
 
 
     const handleMouseDown = (row, col) => {
@@ -81,19 +84,21 @@ const PathVisualizer = () => {
                 const node = nodesInShortestPathOrder[i];
                 const element = document.getElementById(`node-${node.row}-${node.col}`);
                 if (element) element.className = 'node node-shortest-path';
+                if (i === nodesInShortestPathOrder.length - 1) setAnimationFinished(true)
             }, 50 * i);
         }
-        setAnimationFinished(true)
     };
 
-    const animateAddedWalls = (walls) => {
+    const animateAddedWalls = (walls, grid) => {
         for (let i = 0; i < walls.length; i++) {
             setTimeout(() => {
                 const wall = walls[i];
-                const node = grid[wall[0]][wall[1]]
-                node.isWall = true
-                const element = document.getElementById(`node-${wall[0]}-${[wall[1]]}`)
-                if (element) element.className = 'node node-wall'
+                const newGrid = getNewGridWithWallToggled(grid, wall[0], wall[1]);
+                setGrid(newGrid);
+                if (i === walls.length - 1) {
+                    setMouseDisabled(false)
+                    setAnimationFinished(true)
+                }
             }, 20 * i)
         }
     }
@@ -125,21 +130,47 @@ const PathVisualizer = () => {
         animateVisitedNodes(visitedNodesInOrder, nodesInShortestPathOrder, finishNode)
     }
 
-    const visualizeRecursiveDivision = (grid, startPoint, finishPoint) => {
-        let walls = recursiveDivisionMaze(grid, startPoint, finishPoint)
-        animateAddedWalls(walls)
+    const visualizeRecursiveDivision = () => {
+        setMouseDisabled(true)
+        setAnimationFinished(false)
+        const initialGrid = getInitialGrid();
+        setGrid(initialGrid);
+        let walls = recursiveDivisionMaze(initialGrid, startPoint, finishPoint)
+        animateAddedWalls(walls, initialGrid)
     }
 
     const clearGrid = () => {
         setMouseDisabled(false)
-        const initialGrid = getInitialGrid();
-        setGrid(initialGrid);
+        setInitGrid()
         for (let row = 0; row < 20; row++) {
             for (let col = 0; col < 50; col++) {
                 const element = document.getElementById(`node-${row}-${col}`);
                 if (element) element.className = 'node';
             }
         }
+    }
+
+    const clearVisited = () => {
+        setMouseDisabled(false)
+        const newGrid = grid.slice()
+        for (let row = 0; row < 20; row++) {
+            for (let col = 0; col < 50; col++) {
+                const node = newGrid[row][col]
+                const newNode = {
+                    ...node,
+                    distance: Infinity,
+                    isVisited: false,
+                    previousNode: null,
+                    fScore: Infinity
+                };
+                newGrid[row][col] = newNode
+                const element = document.getElementById(`node-${row}-${col}`);
+                if (element && !newNode.isWall) {
+                    element.className = 'node';
+                }
+            }
+        }
+        setGrid(newGrid)
     }
 
     return (
@@ -154,11 +185,14 @@ const PathVisualizer = () => {
                 <button className='btn-main' role="button" onClick={() => !mouseDisabled && visualizeGreedyBSF()}>
                     Visualize Greedy BSF
                 </button>
-                <button className='btn-main' role="button" onClick={() => animationFinished && visualizeRecursiveDivision(grid, startPoint, finishPoint)}>
+                <button className='btn-main' role="button" onClick={() => animationFinished && !mouseDisabled && visualizeRecursiveDivision()}>
                     Create Maze
                 </button>
                 <button className='btn-main' role="button" onClick={() => animationFinished && clearGrid()}>
                     Clear Grid
+                </button>
+                <button className='btn-main' role="button" onClick={() => animationFinished && clearVisited()}>
+                    Clear Visited Nodes
                 </button>
             </div>
             <div style={{ margin: '20px 0 0' }} draggable={false}>
