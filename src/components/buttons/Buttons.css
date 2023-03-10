@@ -1,31 +1,33 @@
-.grid {
-  margin: 100px 0 0;
-}
 
 .btn-container {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
-  gap: 10px;  
+  margin-bottom: 5px;
 }
-
-
-/* CSS */
-.btn-main {
+ .header-text {
+  font-size: 22px;
+  font-weight: 600;
+  padding-right: 20px;
+ }
+ .divider {
+  width: 0.5px;
+  margin: 20px 0;
+  background: #222222;
+}
+ .btn-main {
+  margin: 7px 20px 0 20px;
   background-color: #FFFFFF;
-  border: 1px solid #222222;
   border-radius: 8px;
+  border-width: 0;
   box-sizing: border-box;
   color: #222222;
   cursor: pointer;
   display: inline-block;
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 20px;
-  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
   outline: none;
-  padding: 13px 23px;
+  padding: 0;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -43,15 +45,13 @@
 
 .btn-main:active {
   background-color: #F7F7F7;
-  border-color: #000000;
   transform: scale(.96);
 }
 
 .btn-main:disabled {
-  border-color: #DDDDDD;
   color: #DDDDDD;
   cursor: not-allowed;
   opacity: 1;
-  pointer-events: none; /* add this line */
-}
+  pointer-events: none;
 
+}

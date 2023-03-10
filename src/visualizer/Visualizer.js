@@ -5,13 +5,13 @@ import { aStar } from '../algorithms/a-star';
 import { greedyBestFirstSearch } from '../algorithms/greedyBFS';
 import { getNodesInShortestPathOrder } from '../algorithms/getShortestPath';
 import { getInitialGrid, getNewGridWithWallToggled } from '../components/grid/grid'
-import './PathVisualizer.css'
 import { recursiveDivisionMaze } from '../algorithms/maze/recursiveDivision';
+import Buttons from '../components/buttons/Buttons';
 
 
 
 
-const PathVisualizer = () => {
+const Visualizer = () => {
 
     const [grid, setGrid] = useState([]);
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
@@ -175,27 +175,17 @@ const PathVisualizer = () => {
 
     return (
         <>
-            <div className='btn-container'>
-                <button className='btn-main' role="button" disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeDijkstra()}>
-                    Visualize Dijkstra's Algorithm
-                </button>
-                <button className='btn-main' role="button" disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeAStar()}>
-                    Visualize A*'s Algorithm
-                </button>
-                <button className='btn-main' role="button" disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeGreedyBSF()}>
-                    Visualize Greedy BSF
-                </button>
-                <button className='btn-main' role="button" disabled={mouseDisabled || !animationFinished} onClick={() => animationFinished && !mouseDisabled && visualizeRecursiveDivision()}>
-                    Create Maze
-                </button>
-                <button className='btn-main' role="button" disabled={!animationFinished} onClick={() => animationFinished && clearGrid()}>
-                    Clear Grid
-                </button>
-                <button className='btn-main' role="button" disabled={!animationFinished} onClick={() => animationFinished && clearVisited()}>
-                    Clear Visited Nodes
-                </button>
-            </div>
-            <div style={{ margin: '20px 0 0' }} draggable={false}>
+            <Buttons
+                mouseDisabled={mouseDisabled}
+                animationFinished={animationFinished}
+                visualizeDijkstra={visualizeDijkstra}
+                visualizeAStar={visualizeAStar}
+                visualizeGreedyBSF={visualizeGreedyBSF}
+                visualizeRecursiveDivision={visualizeRecursiveDivision}
+                clearGrid={clearGrid}
+                clearVisited={clearVisited}
+            />
+            <div draggable={false}>
                 {grid.map((row, rowIdx) => {
                     return (
                         <div key={rowIdx} draggable={false}>
@@ -233,5 +223,5 @@ const PathVisualizer = () => {
     );
 }
 
-export default PathVisualizer
+export default Visualizer
 

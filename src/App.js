@@ -1,10 +1,10 @@
 import './App.css';
-import PathVisualizer from './visualizer/PathVisualizer';
+import Visualizer from './visualizer/Visualizer';
 
 function App() {
   return (
     <div className="App" draggable={false}>
-      <PathVisualizer draggable={false}/>
+      <Visualizer draggable={false}/>
     </div>
   );
 }
