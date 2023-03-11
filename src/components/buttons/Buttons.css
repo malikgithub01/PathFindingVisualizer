@@ -7,7 +7,7 @@
  .header-text {
   font-size: 22px;
   font-weight: 600;
-  padding-right: 20px;
+  padding-right: 30px;
  }
  .divider {
   width: 0.5px;
@@ -15,7 +15,7 @@
   background: #222222;
 }
  .btn-main {
-  margin: 7px 20px 0 20px;
+  margin: 7px 30px 0 30px;
   background-color: #FFFFFF;
   border-radius: 8px;
   border-width: 0;
@@ -44,7 +44,6 @@
 }
 
 .btn-main:active {
-  background-color: #F7F7F7;
   transform: scale(.96);
 }
 

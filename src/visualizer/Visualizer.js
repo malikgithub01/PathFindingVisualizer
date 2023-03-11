@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Node from '../components/node/Node';
-import { dijkstra } from '../algorithms/dijkstra';
-import { aStar } from '../algorithms/a-star';
-import { greedyBestFirstSearch } from '../algorithms/greedyBFS';
-import { getNodesInShortestPathOrder } from '../algorithms/getShortestPath';
+import { dijkstra } from '../algorithms/pathfinder/dijkstra';
+import { aStar } from '../algorithms/pathfinder/a-star';
+import { greedyBestFirstSearch } from '../algorithms/pathfinder/greedyBFS';
+import { getNodesInShortestPathOrder } from '../algorithms/pathfinder/getShortestPath';
 import { getInitialGrid, getNewGridWithWallToggled } from '../components/grid/grid'
 import { recursiveDivisionMaze } from '../algorithms/maze/recursiveDivision';
 import Buttons from '../components/buttons/Buttons';
@@ -30,7 +30,6 @@ const Visualizer = () => {
         const initialGrid = getInitialGrid();
         setGrid(initialGrid);
     }
-
 
     const handleMouseDown = (row, col) => {
         if (startPoint.row === row && startPoint.col === col) return;

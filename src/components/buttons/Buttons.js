@@ -19,13 +19,13 @@ function Buttons(props) {
                 <p className='header-text'>Algorithm Visualizer</p>
                 <div class="divider"></div>
                 <button className='btn-main' disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeDijkstra()}>
-                    Visualize Dijkstra's Algorithm
+                    Dijkstra's Algorithm
                 </button>
                 <button className='btn-main' disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeAStar()}>
-                    Visualize A*'s Algorithm
+                    A* Algorithm
                 </button>
                 <button className='btn-main' disabled={mouseDisabled} onClick={() => !mouseDisabled && visualizeGreedyBSF()}>
-                    Visualize Greedy BSF
+                    Greedy BSF
                 </button>
                 <button className='btn-main' disabled={mouseDisabled || !animationFinished} onClick={() => animationFinished && !mouseDisabled && visualizeRecursiveDivision()}>
                     Create Maze
